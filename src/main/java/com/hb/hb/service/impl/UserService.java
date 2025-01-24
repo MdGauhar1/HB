@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -197,4 +198,31 @@ public class UserService implements IUserService {
         }
         return response;
     }
+    @Override
+    public Response handleOAuthLogin(OAuth2User oauth2User) {
+        Response response = new Response();
+        String email = oauth2User.getAttribute("email");
+
+        User user = userRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    // Create a new user if no user exists with this email
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    newUser.setName(oauth2User.getAttribute("name"));
+                    newUser.setRole("USER");  // Default role
+                    userRepository.save(newUser);
+                    return newUser;
+                });
+
+        // Create JWT token for the user
+        String token = jwtUtils.generateTokenFromOAuth2User(oauth2User);
+
+        response.setStatusCode(200);
+        response.setMessage("User logged in via Google");
+        response.setUser(Utils.mapUserEntityToUserDTO(user));
+        response.setToken(token);
+
+        return response;
+    }
+
 }

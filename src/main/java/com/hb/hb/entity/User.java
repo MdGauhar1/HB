@@ -3,6 +3,7 @@ package com.hb.hb.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +33,10 @@ public class User implements UserDetails {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Phone Number is required")
+
     private String phoneNumber;
 
-    @NotBlank(message = "Password is required")
+
     private String password;
 
     private String role;
