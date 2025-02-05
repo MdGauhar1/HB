@@ -22,12 +22,18 @@ import java.util.List;
 @Service
 public class RoomService implements IRoomService {
 
-    @Autowired
+    public RoomService(RoomRepository roomRepository, BookingRepository bookingRepository, CloudinaryService cloudinaryService) {
+        this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
+        this.cloudinaryService = cloudinaryService;
+    }
+
+
     private RoomRepository roomRepository;
-    @Autowired
+
     private BookingRepository bookingRepository;
 
-    @Autowired
+
     private CloudinaryService cloudinaryService;
 
 

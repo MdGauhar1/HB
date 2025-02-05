@@ -22,13 +22,20 @@ import java.util.List;
 @Service
 public class BookingService implements IBookingService {
 
-    @Autowired
+    public BookingService(BookingRepository bookingRepository, IRoomService roomService, RoomRepository roomRepository, UserRepository userRepository) {
+        this.bookingRepository = bookingRepository;
+        this.roomService = roomService;
+        this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
+    }
+
+
     private BookingRepository bookingRepository;
-    @Autowired
+
     private IRoomService roomService;
-    @Autowired
+
     private RoomRepository roomRepository;
-    @Autowired
+
     private UserRepository userRepository;
 
 

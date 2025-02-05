@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
+    public AuthController(IUserService userService, JWTUtils jwtUtils) {
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
+
+
     private IUserService userService;
 
-    @Autowired
+
     private JWTUtils jwtUtils;
 
     @PostMapping("/register")
@@ -35,33 +40,37 @@ public class AuthController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-//    @GetMapping("/login/oauth2/code/google")
+
+
+    // @GetMapping("/login/oauth2/code/google")
+//    @GetMapping("/google-login")
 //    public ResponseEntity<Response> handleGoogleLogin(@AuthenticationPrincipal OAuth2User oauth2User) {
-//        Response response = userService.handleOAuthLogin(oauth2User);  // Use OAuth2User here
+//        Response response = userService.handleOAuthLogin(oauth2User);
 //        if (response.getStatusCode() == 200 && response.getUser() != null) {
 //            // Generate JWT for the Google OAuth user
 //            String token = jwtUtils.generateTokenFromOAuth2User(oauth2User);
 //            response.setToken(token);
+//            // Set the token in the response header (or cookies)
+//            return ResponseEntity.status(response.getStatusCode())
+//                    .header("Authorization", "Bearer " + token) // Optional: return token in the header
+//                    .body(response);
 //        }
 //        return ResponseEntity.status(response.getStatusCode()).body(response);
 //    }
 
-
-
-    @GetMapping("/login/oauth2/code/google")
+    @GetMapping("/google-login")
     public ResponseEntity<Response> handleGoogleLogin(@AuthenticationPrincipal OAuth2User oauth2User) {
         Response response = userService.handleOAuthLogin(oauth2User);
         if (response.getStatusCode() == 200 && response.getUser() != null) {
-            // Generate JWT for the Google OAuth user
+            // Generate JWT for the Google OAuth user (if needed) and return in the response
             String token = jwtUtils.generateTokenFromOAuth2User(oauth2User);
             response.setToken(token);
-            // Set the token in the response header (or cookies)
             return ResponseEntity.status(response.getStatusCode())
-                    .header("Authorization", "Bearer " + token) // Optional: return token in the header
+                    .header("Authorization", "Bearer " + token)
                     .body(response);
         }
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
-
+    
 }
 

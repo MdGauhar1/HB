@@ -19,9 +19,14 @@ import java.util.List;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    @Autowired
+    public RoomController(IRoomService roomService, IBookingService iBookingService) {
+        this.roomService = roomService;
+        this.iBookingService = iBookingService;
+    }
+
+
     private IRoomService roomService;
-    @Autowired
+
     private IBookingService iBookingService;
 
 
@@ -103,7 +108,6 @@ public class RoomController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
 
     }
-
 
 }
 

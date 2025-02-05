@@ -21,13 +21,20 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
-    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtils jwtUtils, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.authenticationManager = authenticationManager;
+    }
+
+
     private UserRepository userRepository;
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
-    @Autowired
+
     private JWTUtils jwtUtils;
-    @Autowired
+
     private AuthenticationManager authenticationManager;
 
 

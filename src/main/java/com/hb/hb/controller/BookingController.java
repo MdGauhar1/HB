@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 public class BookingController {
 
-    @Autowired
+    public BookingController(IBookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
+
     private IBookingService bookingService;
 
     @PostMapping("/book-room/{roomId}/{userId}")
